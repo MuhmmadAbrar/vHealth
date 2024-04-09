@@ -1,13 +1,12 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import vitHealth from './vitHealth.jpg';
 import VIT_Logo from './VIT_Logo.jpg';
 import { supabase } from '../../../supabase'; // Adjust the path based on your file structure
 import { useNavigate } from 'react-router-dom';
 
-
 const Login = () => {
-    const history = useNavigate();
+    const navigate = useNavigate(); // Change history to navigate
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleFormSubmit = async (event) => {
@@ -16,20 +15,18 @@ const Login = () => {
         
         try {
             // Query user data from Supabase
-            
             const { data, error } = await supabase
                 .from('user')
                 .select('*')
                 .eq('user_id', username.value)
                 .single();
-            console.log(data);
 
             if (error) {
                 throw error;
             }
 
             // Check if user exists and password matches
-            if (!data || data.password !== password.value) {
+            if (!data || data.Password !== password.value) {
                 setErrorMessage('Invalid username or password');
                 return;
             }
@@ -37,13 +34,12 @@ const Login = () => {
             // Authentication successful
             setErrorMessage('');
             // Redirect to landing page
-            history.push('/landing');
+            navigate('/landing'); // Use navigate instead of history.push
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');
         }
     };
-
     return (
         <div className="main-container">
             <div className="image-container">
