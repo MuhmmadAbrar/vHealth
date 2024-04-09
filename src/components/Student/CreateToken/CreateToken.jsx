@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './CreateToken.css';
+import { supabase } from '../../../supabase';
 import VIT_Logo from './VIT_Logo.jpg'
 
 
@@ -7,14 +8,32 @@ import VIT_Logo from './VIT_Logo.jpg'
 function CreateToken() {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {       //word async added to use await keyword
     event.preventDefault();
 
     // Get selected category and description
     const category = event.target.category.value;
     const description = event.target.description.value;
 
-    // Display confirmation message
+    //-----nidhi----//
+    try {
+      const { data, error } = await supabase.from('history').insert([
+        {token:12,regNo:'21BAI677',status:'done',remarks:'take medicine', reason: category, Description: description,prescription:'Dolo650',name:'nidhi' }
+      ]);
+    
+      if (error) {
+        console.error('Error inserting data:', error);
+      } else {
+        // Display confirmation message
+        setConfirmationMessage(`Thank you for submitting your grievance.<br>Category: ${category}<br>Description: ${description}`);
+        
+      }
+    } catch (error) {
+      console.error('Error inserting data:', error);
+    }
+
+
+    // Display confirmation message once data has been sent to database
     setConfirmationMessage(`Thank you for submitting your grievance.<br>Category: ${category}<br>Description: ${description}`);
   };
 

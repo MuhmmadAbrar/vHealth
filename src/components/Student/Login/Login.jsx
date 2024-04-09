@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect} from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> Stashed changes
 import './login.css';
 import vitHealth from './vitHealth.jpg';
 import VIT_Logo from './VIT_Logo.jpg';
