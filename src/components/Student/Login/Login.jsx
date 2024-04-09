@@ -33,8 +33,8 @@ const Login = () => {
 
             // Authentication successful
             setErrorMessage('');
-            // Redirect to landing page
-            navigate('/landing'); // Use navigate instead of history.push
+            // Redirect to landing page with userId as URL parameter
+            navigate(`/landing/${data.user_id}`); // Use navigate instead of history.push
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');
@@ -42,9 +42,6 @@ const Login = () => {
     };
     return (
         <div className="main-container">
-            <div className="image-container">
-                <img src={vitHealth} alt="Your Image Description" />
-            </div>
             <div className="login-container">
                 <img src={VIT_Logo} alt="vit_logo" />
                 <form onSubmit={handleFormSubmit}>
@@ -60,6 +57,10 @@ const Login = () => {
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
                 </form>
             </div>
+            <div className="image-container">
+                <img src={vitHealth} alt="Your Image Description" />
+            </div>
+            
         </div>
     );
 };
