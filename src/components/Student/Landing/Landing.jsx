@@ -18,22 +18,10 @@ const Landing = () => {
         <div>
             <div className="grid-container">
                 <div className="grid-item">
-                    <h2>Search-Ticket</h2>
+                    <button><Link to="/create-token">Create Token</Link></button>
                 </div>
                 <div className="grid-item">
-                    <div className="search-ticket">
-                        <div className="searchTicketField"><input type="text" placeholder="Enter Token Number" /></div>
-                        <div className="searchButton"><button className="green-button">Search</button></div>
-                    </div>
-                </div>
-                <div className="grid-item">
-                    <h2>View/Create Tokens</h2>
-                </div>
-                <div className="grid-item">
-                    <div className="viewCreateButtons">
-                        <button><Link to="/create-token">Create Token</Link></button>
-                        <button className="green-button">View History</button>
-                    </div>
+                    <button><Link to="/medical-history">View Medical History</Link></button>
                 </div>
             </div>
         </div>

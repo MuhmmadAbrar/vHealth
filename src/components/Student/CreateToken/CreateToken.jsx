@@ -39,6 +39,7 @@ function CreateToken() {
               <option value="Body Pain">Body Pain</option>
               <option value="Food Poisoning">Food Poisoning</option>
               <option value="Injury/Accident">Injury/Accident</option>
+              <option value="Other">Other</option>
             </select>
 
             <label htmlFor="description">Description:</label>
