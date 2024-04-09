@@ -5,6 +5,7 @@ import VIT_Logo from './VIT_Logo.jpg';
 import { supabase } from '../../../supabase'; // Adjust the path based on your file structure
 import { useNavigate } from 'react-router-dom';
 
+
 const Login = () => {
     const history = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
@@ -12,14 +13,16 @@ const Login = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         const { username, password } = event.target.elements;
-
+        
         try {
             // Query user data from Supabase
+            
             const { data, error } = await supabase
                 .from('user')
                 .select('*')
                 .eq('user_id', username.value)
                 .single();
+            console.log(data);
 
             if (error) {
                 throw error;
