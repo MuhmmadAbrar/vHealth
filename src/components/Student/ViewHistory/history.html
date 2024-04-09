@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="history.css" />
+  </head>
+  <body>
+    <div class="home"></div>
+    <nav class="navbar">
+      <div class="container">
+        <img src="VIT_Logo.jpg" alt="College Logo" />
+        <div class="profile">
+          <img
+            id="profileImg"
+            src="https://picsum.photos/200"
+            alt="Profile Photo"
+          />
+          <span class="username">John Doe</span>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container">
+        <h2>Medical History</h2>
+        <div class="container">
+            <table id="medicalHistoryTable">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Token No</th>
+                        <th>Status</th>
+                        <th>Reason of Visit</th>
+                        <th>Remarks</th>
+                        <th>Prescription</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+    <script src="history.js"></script>
+  </body>
+</html>

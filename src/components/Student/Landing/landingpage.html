@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="landingpage.css">
+</head>
+<body>
+    <div class="home">
+        
+    </div>
+    <nav class="navbar">
+        <div class="container">
+            <img src="VIT_Logo.jpg" alt="College Logo">
+            <div class="profile">
+                <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo">
+                <span class="username">John Doe</span>
+            </div>
+        </div>
+    </nav>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>Search-Ticket</h2>
+        </div>
+        <div class="grid-item">
+            <div class="search-ticket">
+                <div class="searchTicketField"><input type="text" placeholder="Enter Token Number"></div>
+                <div class="searchButton"><button class="green-button">Search</button></div>
+            </div>
+        </div>
+        <div class="grid-item">
+            <h2>View/Create Tokens</h2>
+        </div>
+        <div class="grid-item">
+            <div class="viewCreateButtons">
+                <button class="blue-button" id="createTokenBtn">Create Token</button>
+                <button class="green-button">View History</button>
+            </div>
+        </div>
+        <div class="grid-item" id="createTokenGridItem" style="display: none;">
+            <div class="create-token-form" id="createTokenForm">
+                <input type="text" id="reasonInput" placeholder="Enter reason for visit">
+                <button class="blue-button" id="confirmCreateTokenBtn">Confirm</button>
+                <button class="green-button" id="cancelCreateTokenBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="landingpage.js"></script>
+</body>
+</html>

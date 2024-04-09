@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Appointment</title>
+    <link rel="stylesheet" type="text/css" href="CreateAppointment.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <img src="VIT_Logo.jpg" alt="College Logo">
+            <div class="profile">
+                <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo">
+                <span class="username">John Doe</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-main">
+        <div class="live-status">
+            <h2>You got</h2>
+            <div class="queue-info">
+                <span class="queue-number">5</span>
+            </div>
+            <h2>People ahead of you</h2>
+        </div>
+        <div class="form">
+            <form id="grievanceForm">
+                <label for="category">Select Category:</label>
+                <select id="category" name="category">
+                    <option value="Fever">Fever</option>
+                    <option value="Cold/Cough">Cold/Cough</option>
+                    <option value="Headache">Headache</option>
+                    <option value="Body Pain">Body Pain</option>
+                    <option value="Food Poisoning">Food Poisoning</option>
+                    <option value="Injury/Accident">Injury/Accident</option>
+                </select>
+    
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Enter your grievance description here..."></textarea>
+    
+                <button type="submit" id="submitBtn">Submit</button>
+            </form>
+        </div>
+        <div id="confirmationMessage" class="confirmation-message"></div>
+    </div>
+    <script src="CreateAppointment.js"></script>
+</body>
+</html>

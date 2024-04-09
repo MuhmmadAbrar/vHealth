@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attender's Queue Display</title>
+    <link rel="stylesheet" type="text/css" href="queue.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <img src="VIT_Logo.jpg" alt="College Logo" />
+        <div class="profile">
+          <img
+            id="profileImg"
+            src="https://picsum.photos/200"
+            alt="Profile Photo"
+          />
+          <span class="username">John Doe</span>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container">
+      <h2>Attender's Queue</h2>
+      <div class="tcontainer">
+        <table id="queue-table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Token No</th>
+                <th>Patient Name</th>
+                <th>Register Number</th>
+                <th>Reason</th>
+                <th>Entry Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Queue items will be inserted here -->
+            </tbody>
+          </table>
+      </div>
+      
+    </div>
+
+    <script>
+      // Sample queue data
+      const queueData = [
+        {
+          tokenNo: 101,
+          patientName: "Dhanush M",
+          registerNumber: "21BAI1744",
+          reason: "Fever",
+          entryTime: "10:00 AM",
+        },
+        {
+          tokenNo: 102,
+          patientName: "Jane Smith",
+          registerNumber: "21BAI1111",
+          reason: "Cold",
+          entryTime: "10:30 AM",
+        },
+        {
+          tokenNo: 103,
+          patientName: "Mike Johnson",
+          registerNumber: "21BRS1222",
+          reason: "Cough",
+          entryTime: "11:00 AM",
+        },
+        // Add more entries as needed...
+      ];
+
+      function populateQueueTable() {
+        const tableBody = document
+          .getElementById("queue-table")
+          .getElementsByTagName("tbody")[0];
+
+        queueData.forEach((item, index) => {
+          let row = tableBody.insertRow();
+          let cell1 = row.insertCell(0);
+          let cell2 = row.insertCell(1);
+          let cell3 = row.insertCell(2);
+          let cell4 = row.insertCell(3);
+          let cell5 = row.insertCell(4);
+          let cell6 = row.insertCell(5);
+
+          cell1.innerHTML = index + 1;
+          cell2.innerHTML = item.tokenNo;
+          cell3.innerHTML = item.patientName;
+          cell4.innerHTML = item.registerNumber;
+          cell5.innerHTML = item.reason;
+          cell6.innerHTML = item.entryTime;
+        });
+      }
+
+      // Call the function to populate the table when the page loads
+      window.onload = function () {
+        populateQueueTable();
+      };
+    </script>
+  </body>
+</html>
