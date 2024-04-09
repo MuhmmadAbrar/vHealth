@@ -1,12 +1,19 @@
 import React, { useState, useEffect} from 'react';
-import './Login.css';
+import './login.css';
 import vitHealth from './vitHealth.jpg';
 import VIT_Logo from './VIT_Logo.jpg';
-import { supabase } from '../../../supabase'; // Adjust the path based on your file structure
 import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { createClient } from "@supabase/supabase-js";
+
+
+// Initialize Supabase client
+const supabaseUrl = "https://ttwewexsotqwxisgnntg.supabase.co";
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0d2V3ZXhzb3Rxd3hpc2dubnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI2NzAyNTAsImV4cCI6MjAyODI0NjI1MH0.08M6Zn1pEAYSb7KrJnxrYWsaiVlurYpdBpkqV2HfFoE'
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Login = () => {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleFormSubmit = async (event) => {
@@ -34,13 +41,12 @@ const Login = () => {
             // Authentication successful
             setErrorMessage('');
             // Redirect to landing page
-            history.push('/landing');
+            navigate('/landing');
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');
         }
     };
-
     return (
         <div className="main-container">
             <div className="image-container">
