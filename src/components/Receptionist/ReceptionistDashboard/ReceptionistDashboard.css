@@ -1,0 +1,96 @@
+/* DoctorDashboard.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.navbar {
+  background-color: #2980B9;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container img {
+  height: 60px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.content {
+  margin-top: 20px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Align content to the right end */
+  font-weight: bold;
+  color: black;
+}
+.main-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.container{
+  align-items: center;
+  
+  margin-top: 20px; /* Add some margin if needed */
+
+}
+.welcome-heading {
+  align-items: center;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+table {
+  align-items: center;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  align-items: center;
+  background-color: #2980b9;
+  color: #fff;
+}
+.report-button {
+  align-items: center;
+  background-color: blue;
+  color: white;
+}
+
+
+
+table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
