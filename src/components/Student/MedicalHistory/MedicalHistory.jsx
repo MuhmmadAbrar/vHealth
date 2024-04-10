@@ -75,8 +75,7 @@ const MedicalHistory = () => {
                 <div className="container">
                     <img src={VIT_Logo} alt="College Logo" />
                     <div className="profile">
-                        <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo" />
-                        <span className="username">{studentName}</span>
+                        <span className="username">{userId}</span>
                         <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
                     </div>
                 </div>

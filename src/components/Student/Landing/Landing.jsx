@@ -58,13 +58,19 @@ const Landing = () => {
             </nav>
             <div className="grid-container">
                 <div className="grid-item">
-                    <button><Link to={`/create-token/${userId}`}>Create Token</Link></button>
+                <button className="create-token-btn" onClick={() => navigate(`/create-token/${userId}`)}>
+                    <span>Create Token</span>
+                </button>
                 </div>
                 <div className="grid-item">
-                    <button><Link to={`/medical-history/${userId}`}>View Medical History</Link></button>
+                    <button className="create-token-btn" onClick={() => navigate(`/medical-history/${userId}`)}>
+                        <span>View Medical History</span>
+                    </button>
                 </div>
             </div>
-            <p>Welcome, {studentName}!</p> {/* Display student name */}
+            <div className="student-name-container">
+                <h2>Welcome {studentName}</h2>
+            </div>
         </div>
     );
 };

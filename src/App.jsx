@@ -15,7 +15,7 @@ function App() {
                     <Route exact path="/" element={<Login />} />
                     <Route path="/landing/:userId" element={<Landing />} /> {/* Landing route with userId as a URL parameter */}
                     <Route path="/create-token/:userId" element={<CreateToken />} />
-                    <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+                    <Route path="/doctor-dashboard/:userId" element={<DoctorDashboard />} />
                     <Route path="/medical-history/:userId" element={<MedicalHistory />} />
                 </Routes>
             </div>

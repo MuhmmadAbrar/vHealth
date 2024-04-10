@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './CreateToken.css';
-import VIT_Logo from './VIT_Logo.jpg'
-
-
+import VIT_Logo from './VIT_Logo.jpg';
+import { useNavigate,Link, useParams } from 'react-router-dom';
+import { supabase } from '../../../supabase'; // Import your Supabase client instance
 
 function CreateToken() {
+  const { userId } = useParams(); // Get userId from URL parameter
   const [confirmationMessage, setConfirmationMessage] = useState('');
-  
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -18,9 +20,26 @@ function CreateToken() {
     setConfirmationMessage(`Thank you for submitting your grievance.<br>Category: ${category}<br>Description: ${description}`);
   };
 
+  const handleSignOut = async () => {
+    try {
+        await supabase.auth.signOut(); // Sign out the user using Supabase auth
+        navigate('/');
+    } catch (error) {
+        console.error('Error signing out:', error.message);
+    }
+};
+
   return (
     <div>
-    
+      <nav className="navbar">
+        <div className="container">
+          <img src={VIT_Logo} alt="College Logo" />
+          <div className="profile">
+              <span className="username">{userId}</span>
+              <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
+          </div>
+        </div>
+      </nav>
       <div className="container-main">
         <div className="live-status">
           <h2>You got</h2>
