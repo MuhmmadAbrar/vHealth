@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import './DoctorDashboard.css'; // Make sure the path is correct
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from '../../../supabase'; // Import your Supabase client instance
 import { useNavigate } from 'react-router-dom';
 import VIT_Logo from './VIT_Logo.jpg';
-import {useParams } from 'react-router-dom';
-
-// Initialize Supabase client
-const supabaseUrl = "https://ttwewexsotqwxisgnntg.supabase.co";
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0d2V3ZXhzb3Rxd3hpc2dubnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI2NzAyNTAsImV4cCI6MjAyODI0NjI1MH0.08M6Zn1pEAYSb7KrJnxrYWsaiVlurYpdBpkqV2HfFoE'
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { useParams } from 'react-router-dom';
 
 const DoctorDashboard = () => {
     const [patientData, setPatientData] = useState([]);
+    const [dataLength, setDataLength] = useState([0]);
     const [doctorName, setDoctorName] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate(); // Use navigate for redirection after signout
-    const { userId } = useParams(); 
+    const { userId } = useParams();
 
     useEffect(() => {
         // Fetch patient data from Supabase
         const fetchPatientData = async () => {
             try {
                 const { data, error } = await supabase
-                    .from('patient_data') // Adjust this to your Supabase table name
+                    .from('history') // Adjust this to your Supabase table name
+                    .select('*'); // Adjust according to the fields you need
+
+                const { data1, error1 } = await supabase
+                    .from('q_info') // Adjust this to your Supabase table name
                     .select('*'); // Adjust according to the fields you need
 
                 if (error) {
@@ -30,6 +31,9 @@ const DoctorDashboard = () => {
 
                 if (data) {
                     setPatientData(data); // Set patient data in state
+                }
+                if(data1){
+                    setDataLength(data1.length)
                 }
             } catch (error) {
                 console.error('Error fetching patient data:', error.message);
@@ -46,7 +50,7 @@ const DoctorDashboard = () => {
                 const { data, error } = await supabase
                     .from('user')
                     .select('name')
-                    .eq('user_id',username.value)
+                    .eq('user_id', userId)
                     .single();
 
                 if (error) {
@@ -61,6 +65,7 @@ const DoctorDashboard = () => {
             } catch (error) {
                 console.error('Error fetching doctor data:', error.message);
             }
+            
         }
 
         fetchDoctorData(); // Call the fetchDoctorData function when the component mounts
@@ -75,6 +80,41 @@ const DoctorDashboard = () => {
         }
     };
 
+    const handleTokenClose =async () => {
+        setCurrentIndex(prevIndex => prevIndex + 1);
+        // Call the asynchronous function
+        sendDataToSupabase();
+        
+    };
+
+    const handleReportPatient = async() => {
+        // Logic to report patient goes here
+    };
+
+    //extract the data
+    const remarksArray = patientData.map(patient => patient.remarks);
+    const prescriptionArray = patientData.map(patient => patient.prescription);
+
+    //adding data into the database
+    const sendDataToSupabase = async () => {
+        try {
+            const { data, error } = await supabase
+            .from('history')
+            .update({ status: "Closed", remarks: remarksArray, prescription: prescriptionArray })
+            .eq('regNo', userId)
+            .eq('datetime', patientData.datetime); // Adjust this according to your data structure
+            if (error) {
+                throw error;
+            }
+    
+            console.log('Data added to Supabase:', data);
+        } catch (error) {
+            console.error('Error adding data to Supabase:', error.message);
+        }
+    };
+    
+    
+
     return (
         <div>
             <nav className="navbar">
@@ -87,33 +127,51 @@ const DoctorDashboard = () => {
                 </div>
             </nav>
             <div className="main-container">
-                <h2 className="welcome-heading">Welcome Doctor {doctorName}</h2> {/* Centered heading */}
-                <h2>Doctor Dashboard</h2>
+                <h2 className="dashboard-heading">Doctor Dashboard</h2>
+
+                <div className="live-status">
+                    <h2>Queue Count</h2>
+                    <div className="queue-info">
+                        <span className="queue-number">{3}</span>
+                    </div>
+                </div>
+
                 <div className="container">
-                    <table id="patientDataTable">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Name</th>
-                                <th>Registration No</th>
-                                <th>Reason of Visit</th>
-                                <th>Remarks</th>
-                                <th>Prescription</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {patientData.map((patient, index) => (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{patient.name}</td>
-                                    <td>{patient.regNo}</td>
-                                    <td>{patient.reason}</td>
-                                    <td>{patient.remarks}</td>
-                                    <td>{patient.prescription}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    {patientData.slice(currentIndex, currentIndex + 1).map((patient, index) => (
+                        <form key={index} className="patient-form">
+                            <h3 className="form-heading">Patient Details</h3>
+                            <div className="form-row">
+                                <label>Ticket No</label>
+                                <span>{index + 1}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Name</label>
+                                <span>{patient.name}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Registration No</label>
+                                <span>{patient.regNo}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Reason of Visit</label>
+                                <span>{patient.reason}</span>
+                            </div>
+                            <div className="form-row">
+                                <label htmlFor={`remarks_${index}`}>Remarks</label>
+                                <input id={`remarks_${index}`} type="text" placeholder="Remarks" style={{ height: '100px' }}/>
+                            </div>
+                            <div className="form-row">
+                                <label htmlFor={`prescription_${index}`}>Prescription</label>
+                                <input id={`prescription_${index}`} type="text" placeholder="Prescription" style={{ height: '100px' }}/>
+                            </div>
+                            <div className="form-row">
+                                <button type="button" onClick={handleTokenClose}>Close Token</button>
+                            </div>
+                            <div className="form-row">
+                                <button type="button" className="report-btn" onClick={handleReportPatient}>Report Patient</button>
+                            </div>
+                        </form>
+                    ))}
                 </div>
             </div>
         </div>
