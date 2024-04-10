@@ -44,6 +44,28 @@ const Login = () => {
             } else {
                 setErrorMessage('Unknown user type');
             }
+=======
+
+            // Redirect to landing page
+            navigate('/landing'); // Use navigate instead of history.push
+=======
+
+            // Check the type of user
+            // Check the type of user
+            if (data.employee_type === 'Student') {
+                // Redirect to LandingPage with userId as URL parameter
+                navigate('/landing/${data.user_id}'); // Use navigate instead of history.push
+            } else if (data.employee_type === 'Doctor') {
+                // Redirect to DoctorDashboard
+                navigate('/doctor-dashboard/${data.user_id}');
+            }
+            else if (data.employee_type === 'Receptionist') {
+                // Redirect to ReceptionistDashboard
+                navigate('/receptionist/${data.user_id}');
+            } else {
+                setErrorMessage('Unknown user type');
+            }
+
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');

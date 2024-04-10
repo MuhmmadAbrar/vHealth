@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Appointment</title>
+    <link rel="stylesheet" type="text/css" href="CreateAppointment.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+            background-color: #2980B9;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Change to space-between */
+        }
+
+        .container img {
+            height: 60px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .username {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .container-main {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center the content */
+        }
+
+        .report {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .report h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sub-field {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <img src="VIT_Logo.jpg" alt="College Logo">
+            <div class="profile">
+                <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo">
+                <span class="username">John Doe</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-main">
+        <div class="report">
+            <h2>Report</h2>
+            <div class="sub-field">
+                <label for="Register Number">Register Number:</label>
+                <input type="text" id="name" name="Register number" placeholder="Enter your register number">
+            </div>
+            <div class="sub-field">
+                <label for="Description">Description: </label>
+                <input type="text" id="registerNumber" name="Descrition" placeholder="Enter descritption">
+            </div>
+        </div>
+        <div id="confirmationMessage" class="confirmation-message"></div>
+    </div>
+</body>
+</html>
