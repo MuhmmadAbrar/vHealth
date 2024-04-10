@@ -1,115 +1,179 @@
-import React, { useState } from 'react';
-import './DoctorDashboard.css'; // Import your CSS file here
-import { supabase } from '../../../supabase'; // Assuming you have a separate file for Supabase initialization
+import React, { useEffect, useState } from 'react';
+import './DoctorDashboard.css'; // Make sure the path is correct
+import { supabase } from '../../../supabase'; // Import your Supabase client instance
+import { useNavigate } from 'react-router-dom';
+import VIT_Logo from './VIT_Logo.jpg';
+import { useParams } from 'react-router-dom';
 
 const DoctorDashboard = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        regNo: '',
-        reason: '',
-        remarks: '',
-        prescription: ''
-    });
-    // Function to handle button click for viewing patient history
-    const viewHistory = () => {
-        // Add your logic for viewing patient history here
+    const [patientData, setPatientData] = useState([]);
+    const [dataLength, setDataLength] = useState([0]);
+    const [doctorName, setDoctorName] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const navigate = useNavigate(); // Use navigate for redirection after signout
+    const { userId } = useParams();
+
+    useEffect(() => {
+        // Fetch patient data from Supabase
+        const fetchPatientData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('history') // Adjust this to your Supabase table name
+                    .select('*'); // Adjust according to the fields you need
+
+                const { data1, error1 } = await supabase
+                    .from('q_info') // Adjust this to your Supabase table name
+                    .select('*'); // Adjust according to the fields you need
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setPatientData(data); // Set patient data in state
+                }
+                if(data1){
+                    setDataLength(data1.length)
+                }
+            } catch (error) {
+                console.error('Error fetching patient data:', error.message);
+            }
+        };
+
+        fetchPatientData();
+    }, []);
+
+    useEffect(() => {
+        // Fetch doctor data from Supabase
+        async function fetchDoctorData() {
+            try {
+                const { data, error } = await supabase
+                    .from('user')
+                    .select('name')
+                    .eq('user_id', userId)
+                    .single();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setDoctorName(data.name); // Set doctor name in state
+                } else {
+                    setDoctorName('Unknown'); // If doctor not found, set name as 'Unknown'
+                }
+            } catch (error) {
+                console.error('Error fetching doctor data:', error.message);
+            }
+            
+        }
+
+        fetchDoctorData(); // Call the fetchDoctorData function when the component mounts
+    }, []); // useEffect dependency array is empty since it only runs once
+
+    const handleSignOut = async () => {
+        try {
+            await supabase.auth.signOut(); // Sign out the user using Supabase auth
+            navigate('/');
+        } catch (error) {
+            console.error('Error signing out:', error.message);
+        }
     };
 
-    // Function to handle form submission
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleTokenClose =async () => {
+        setCurrentIndex(prevIndex => prevIndex + 1);
+        // Call the asynchronous function
+        sendDataToSupabase();
         
+    };
+
+    const handleReportPatient = async() => {
+        // Logic to report patient goes here
+    };
+
+    //extract the data
+    const remarksArray = patientData.map(patient => patient.remarks);
+    const prescriptionArray = patientData.map(patient => patient.prescription);
+
+    //adding data into the database
+    const sendDataToSupabase = async () => {
         try {
-            // Get current date and time
-            const currentDate = new Date().toLocaleDateString('en-CA'); // ISO 8601 format (YYYY-MM-DD)
-            const currentTime = new Date().toLocaleTimeString('it-IT'); // 24-Hour format (HH:MM:SS)
-    
-            // Combine the formData with currentDate and currentTime
-            const submissionData = {
-                name: formData.name,
-                regNo: formData.regNo,
-                reason: formData.reason, // Make sure this matches the column name in your Supabase table
-                remarks: formData.remarks,
-                prescription: formData.prescription,
-                date: currentDate, // Assuming your column for the date is named 'date'
-                time: currentTime  // Assuming your column for the time is named 'time'
-            };
-    
-            // Insert submissionData into Supabase table
-            const { data, error } = await supabase.from('history').insert([submissionData]); // Make sure 'history' matches your table name
-    
+            const { data, error } = await supabase
+            .from('history')
+            .update({ status: "Closed", remarks: remarksArray, prescription: prescriptionArray })
+            .eq('regNo', userId)
+            .eq('datetime', patientData.datetime); // Adjust this according to your data structure
             if (error) {
                 throw error;
             }
     
-            console.log("New record added:", data);
-            alert("Patient added sucessfully!")
-            // Reset formData state if needed
-            setFormData({
-                name: '',
-                regNo: '',
-                reason: '',
-                remarks: '',
-                prescription: ''
-            });
+            console.log('Data added to Supabase:', data);
         } catch (error) {
-            console.error("Error adding new record:", error.message);
+            console.error('Error adding data to Supabase:', error.message);
         }
     };
+    
+    
 
     return (
         <div>
-            <div className="home"></div>
-            {/* <nav className="navbar">
+            <nav className="navbar">
                 <div className="container">
-                    <img src="VIT_Logo.jpg" alt="College Logo" />
+                    <img src={VIT_Logo} alt="College Logo" />
                     <div className="profile">
-                        <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo" />
-                        <span className="username">John Doe</span>
+                        <span className="username">{doctorName}</span>
+                        <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
                     </div>
                 </div>
-            </nav> */}
-
+            </nav>
             <div className="main-container">
-                {/* Button to view patient history */}
-                <button onClick={viewHistory}>View History</button>
+                <h2 className="dashboard-heading">Doctor Dashboard</h2>
 
-                <form id="visitForm" onSubmit={handleSubmit}>
-                    {/* Name input */}
-                    <div>
-                        <label htmlFor="name">Name:</label>
-                        <input type="text" id="name" name="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                <div className="live-status">
+                    <h2>Queue Count</h2>
+                    <div className="queue-info">
+                        <span className="queue-number">{3}</span>
                     </div>
+                </div>
 
-                    {/* Registration Number input */}
-                    <div>
-                        <label htmlFor="regNo">Reg No:</label>
-                        <input type="text" id="regNo" name="regNo" value={formData.regNo} onChange={(e) => setFormData({ ...formData, regNo: e.target.value })} required />
-                    </div>
-
-                    {/* Reason of Visit */}
-                    <div>
-                        <label htmlFor="reason">Reason of Visit:</label>
-                        <textarea id="reason" name="reason" value={formData.reason} onChange={(e) => setFormData({ ...formData, reason: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Add remarks */}
-                    <div>
-                        <label htmlFor="remarks">Remarks:</label>
-                        <textarea id="remarks" name="remarks" value={formData.remarks} onChange={(e) => setFormData({ ...formData, remarks: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Prescription */}
-                    <div>
-                        <label htmlFor="prescription">Prescription:</label>
-                        <textarea id="prescription" name="prescription" value={formData.prescription} onChange={(e) => setFormData({ ...formData, prescription: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Submit button */}
-                    <button type="submit">Close Token</button>
-                </form>
+                <div className="container">
+                    {patientData.slice(currentIndex, currentIndex + 1).map((patient, index) => (
+                        <form key={index} className="patient-form">
+                            <h3 className="form-heading">Patient Details</h3>
+                            <div className="form-row">
+                                <label>Ticket No</label>
+                                <span>{index + 1}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Name</label>
+                                <span>{patient.name}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Registration No</label>
+                                <span>{patient.regNo}</span>
+                            </div>
+                            <div className="form-row">
+                                <label>Reason of Visit</label>
+                                <span>{patient.reason}</span>
+                            </div>
+                            <div className="form-row">
+                                <label htmlFor={`remarks_${index}`}>Remarks</label>
+                                <input id={`remarks_${index}`} type="text" placeholder="Remarks" style={{ height: '100px' }}/>
+                            </div>
+                            <div className="form-row">
+                                <label htmlFor={`prescription_${index}`}>Prescription</label>
+                                <input id={`prescription_${index}`} type="text" placeholder="Prescription" style={{ height: '100px' }}/>
+                            </div>
+                            <div className="form-row">
+                                <button type="button" onClick={handleTokenClose}>Close Token</button>
+                            </div>
+                            <div className="form-row">
+                                <button type="button" className="report-btn" onClick={handleReportPatient}>Report Patient</button>
+                            </div>
+                        </form>
+                    ))}
+                </div>
             </div>
-            <script src="history.js"></script>
         </div>
     );
 };

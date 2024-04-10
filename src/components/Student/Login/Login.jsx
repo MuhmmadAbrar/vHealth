@@ -33,7 +33,19 @@ const Login = () => {
 
             // Authentication successful
             setErrorMessage('');
-<<<<<<< Updated upstream
+
+            // Check the type of user
+            if (data.employee_type === 'Student') {
+                // Redirect to LandingPage with userId as URL parameter
+                navigate(`/landing/${data.user_id}`); // Use navigate instead of history.push
+            } else if (data.employee_type === 'Doctor') {
+                // Redirect to DoctorDashboard
+                navigate(`/doctor-dashboard/${data.user_id}`);
+            } else {
+                setErrorMessage('Unknown user type');
+            }
+=======
+
             // Redirect to landing page
             navigate('/landing'); // Use navigate instead of history.push
 =======
@@ -53,17 +65,15 @@ const Login = () => {
             } else {
                 setErrorMessage('Unknown user type');
             }
->>>>>>> Stashed changes
+
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');
         }
     };
+
     return (
         <div className="main-container">
-            <div className="image-container">
-                <img src={vitHealth} alt="Your Image Description" />
-            </div>
             <div className="login-container">
                 <img src={VIT_Logo} alt="vit_logo" />
                 <form onSubmit={handleFormSubmit}>

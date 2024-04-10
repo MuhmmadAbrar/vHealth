@@ -20,8 +20,8 @@ body, html {
     justify-content: space-between; /* Change to space-between */
 }
 
-.container img{
-    height:60px
+.container img {
+    height: 60px;
 }
 
 .profile {
@@ -29,18 +29,17 @@ body, html {
     align-items: center;
 }
 
-.profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.username {
     margin-right: 10px;
 }
 
-.profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+.signout-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
 .center {
@@ -133,4 +132,29 @@ input[type="text"]::placeholder {
 
 .viewCreateButtons{
     align-items: center;
+}
+
+.create-token-btn {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.create-token-btn:hover {
+    background-color: lightblue;
+    color: black;
+}
+
+.student-name-container {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 150px;
 }
