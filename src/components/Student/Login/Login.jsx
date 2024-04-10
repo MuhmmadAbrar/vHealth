@@ -33,13 +33,23 @@ const Login = () => {
 
             // Authentication successful
             setErrorMessage('');
-            // Redirect to landing page with userId as URL parameter
-            navigate(`/landing/${data.user_id}`); // Use navigate instead of history.push
+
+            // Check the type of user
+            if (data.employee_type === 'Student') {
+                // Redirect to LandingPage with userId as URL parameter
+                navigate(`/landing/${data.user_id}`); // Use navigate instead of history.push
+            } else if (data.employee_type === 'Doctor') {
+                // Redirect to DoctorDashboard
+                navigate(`/doctor-dashboard/${data.user_id}`);
+            } else {
+                setErrorMessage('Unknown user type');
+            }
         } catch (error) {
             console.error('Authentication error:', error.message);
             setErrorMessage('Authentication error. Please try again.');
         }
     };
+
     return (
         <div className="main-container">
             <div className="login-container">
@@ -57,10 +67,6 @@ const Login = () => {
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
                 </form>
             </div>
-            <div className="image-container">
-                <img src={vitHealth} alt="Your Image Description" />
-            </div>
-            
         </div>
     );
 };

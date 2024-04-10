@@ -1,55 +1,40 @@
-.main-container {
-    width: 80%;
-    max-width: 600px;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin: auto;
-    display: block;
-}
+/* DoctorDashboard.css */
 
-h2 {
-    margin-bottom: 20px;
-}
-
-form > div {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-textarea {
-    width: 100%;
+.header {
+    display: flex;
+    justify-content: flex-end;
     padding: 10px;
-    margin-bottom: 10px;
+    background-color: #f0f0f0;
+  }
+  
+  .patient-data {
+    margin-top: 20px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    text-align: left; /* Align inputs to the left */
-}
-
-button {
-    display: block;
-    width: 100%;
     padding: 10px;
-    background-color: #007bff;
-    color: white;
+  }
+  
+  .patient-row {
+    margin-bottom: 10px;
+  }
+  
+  .actions {
+    margin-top: 20px;
+  }
+  
+  .actions button {
+    margin-right: 10px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition */
-}
-
-button:hover,
-button:focus {
+  }
+  
+  .actions button:hover {
     background-color: #0056b3;
-    outline: none; /* Remove default focus outline */
-}
+  }
+  
+  form {
+    display: inline-block;
+  }
+  

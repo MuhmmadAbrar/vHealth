@@ -1,115 +1,121 @@
-import React, { useState } from 'react';
-import './DoctorDashboard.css'; // Import your CSS file here
-import { supabase } from '../../../supabase'; // Assuming you have a separate file for Supabase initialization
+import React, { useEffect, useState } from 'react';
+import './DoctorDashboard.css'; // Make sure the path is correct
+import { createClient } from "@supabase/supabase-js";
+import { useNavigate } from 'react-router-dom';
+import VIT_Logo from './VIT_Logo.jpg';
+import {useParams } from 'react-router-dom';
+
+// Initialize Supabase client
+const supabaseUrl = "https://ttwewexsotqwxisgnntg.supabase.co";
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0d2V3ZXhzb3Rxd3hpc2dubnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI2NzAyNTAsImV4cCI6MjAyODI0NjI1MH0.08M6Zn1pEAYSb7KrJnxrYWsaiVlurYpdBpkqV2HfFoE'
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const DoctorDashboard = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        regNo: '',
-        reason: '',
-        remarks: '',
-        prescription: ''
-    });
-    // Function to handle button click for viewing patient history
-    const viewHistory = () => {
-        // Add your logic for viewing patient history here
-    };
+    const [patientData, setPatientData] = useState([]);
+    const [doctorName, setDoctorName] = useState('');
+    const navigate = useNavigate(); // Use navigate for redirection after signout
+    const { userId } = useParams(); 
 
-    // Function to handle form submission
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        
-        try {
-            // Get current date and time
-            const currentDate = new Date().toLocaleDateString('en-CA'); // ISO 8601 format (YYYY-MM-DD)
-            const currentTime = new Date().toLocaleTimeString('it-IT'); // 24-Hour format (HH:MM:SS)
-    
-            // Combine the formData with currentDate and currentTime
-            const submissionData = {
-                name: formData.name,
-                regNo: formData.regNo,
-                reason: formData.reason, // Make sure this matches the column name in your Supabase table
-                remarks: formData.remarks,
-                prescription: formData.prescription,
-                date: currentDate, // Assuming your column for the date is named 'date'
-                time: currentTime  // Assuming your column for the time is named 'time'
-            };
-    
-            // Insert submissionData into Supabase table
-            const { data, error } = await supabase.from('history').insert([submissionData]); // Make sure 'history' matches your table name
-    
-            if (error) {
-                throw error;
+    useEffect(() => {
+        // Fetch patient data from Supabase
+        const fetchPatientData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('patient_data') // Adjust this to your Supabase table name
+                    .select('*'); // Adjust according to the fields you need
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setPatientData(data); // Set patient data in state
+                }
+            } catch (error) {
+                console.error('Error fetching patient data:', error.message);
             }
-    
-            console.log("New record added:", data);
-            alert("Patient added sucessfully!")
-            // Reset formData state if needed
-            setFormData({
-                name: '',
-                regNo: '',
-                reason: '',
-                remarks: '',
-                prescription: ''
-            });
+        };
+
+        fetchPatientData();
+    }, []);
+
+    useEffect(() => {
+        // Fetch doctor data from Supabase
+        async function fetchDoctorData() {
+            try {
+                const { data, error } = await supabase
+                    .from('user')
+                    .select('name')
+                    .eq('user_id',username.value)
+                    .single();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setDoctorName(data.name); // Set doctor name in state
+                } else {
+                    setDoctorName('Unknown'); // If doctor not found, set name as 'Unknown'
+                }
+            } catch (error) {
+                console.error('Error fetching doctor data:', error.message);
+            }
+        }
+
+        fetchDoctorData(); // Call the fetchDoctorData function when the component mounts
+    }, []); // useEffect dependency array is empty since it only runs once
+
+    const handleSignOut = async () => {
+        try {
+            await supabase.auth.signOut(); // Sign out the user using Supabase auth
+            navigate('/');
         } catch (error) {
-            console.error("Error adding new record:", error.message);
+            console.error('Error signing out:', error.message);
         }
     };
 
     return (
         <div>
-            <div className="home"></div>
-            {/* <nav className="navbar">
+            <nav className="navbar">
                 <div className="container">
-                    <img src="VIT_Logo.jpg" alt="College Logo" />
+                    <img src={VIT_Logo} alt="College Logo" />
                     <div className="profile">
-                        <img id="profileImg" src="https://picsum.photos/200" alt="Profile Photo" />
-                        <span className="username">John Doe</span>
+                        <span className="username">{doctorName}</span>
+                        <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
                     </div>
                 </div>
-            </nav> */}
-
+            </nav>
             <div className="main-container">
-                {/* Button to view patient history */}
-                <button onClick={viewHistory}>View History</button>
-
-                <form id="visitForm" onSubmit={handleSubmit}>
-                    {/* Name input */}
-                    <div>
-                        <label htmlFor="name">Name:</label>
-                        <input type="text" id="name" name="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-                    </div>
-
-                    {/* Registration Number input */}
-                    <div>
-                        <label htmlFor="regNo">Reg No:</label>
-                        <input type="text" id="regNo" name="regNo" value={formData.regNo} onChange={(e) => setFormData({ ...formData, regNo: e.target.value })} required />
-                    </div>
-
-                    {/* Reason of Visit */}
-                    <div>
-                        <label htmlFor="reason">Reason of Visit:</label>
-                        <textarea id="reason" name="reason" value={formData.reason} onChange={(e) => setFormData({ ...formData, reason: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Add remarks */}
-                    <div>
-                        <label htmlFor="remarks">Remarks:</label>
-                        <textarea id="remarks" name="remarks" value={formData.remarks} onChange={(e) => setFormData({ ...formData, remarks: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Prescription */}
-                    <div>
-                        <label htmlFor="prescription">Prescription:</label>
-                        <textarea id="prescription" name="prescription" value={formData.prescription} onChange={(e) => setFormData({ ...formData, prescription: e.target.value })} required></textarea>
-                    </div>
-
-                    {/* Submit button */}
-                    <button type="submit">Close Token</button>
-                </form>
+                <h2 className="welcome-heading">Welcome Doctor {doctorName}</h2> {/* Centered heading */}
+                <h2>Doctor Dashboard</h2>
+                <div className="container">
+                    <table id="patientDataTable">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name</th>
+                                <th>Registration No</th>
+                                <th>Reason of Visit</th>
+                                <th>Remarks</th>
+                                <th>Prescription</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {patientData.map((patient, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{patient.name}</td>
+                                    <td>{patient.regNo}</td>
+                                    <td>{patient.reason}</td>
+                                    <td>{patient.remarks}</td>
+                                    <td>{patient.prescription}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <script src="history.js"></script>
         </div>
     );
 };
